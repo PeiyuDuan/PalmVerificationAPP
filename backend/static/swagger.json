@@ -1,0 +1,312 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Palm Print API",
+    "version": "1.0.0",
+    "description": "API for palm print user registration, login, and updates."
+  },
+  "paths": {
+    "/api/register": {
+      "post": {
+        "summary": "Register a new user with left and right palm print images.",
+        "operationId": "registerUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The username of the user."
+                  },
+                  "left_palm_image": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "Base64-encoded left palm image."
+                  },
+                  "right_palm_image": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "Base64-encoded right palm image."
+                  }
+                },
+                "required": ["username", "left_palm_image", "right_palm_image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User registered successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error during registration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "summary": "Login a user using username and a palm print image.",
+        "operationId": "login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The username of the user."
+                  },
+                  "palm_image": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "Base64-encoded palm image."
+                  }
+                },
+                "required": ["username", "palm_image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "hand": {
+                      "type": "string",
+                      "enum": ["left", "right"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Username is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Login failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/plain-login": {
+      "post": {
+        "summary": "Login a user using only a palm print image.",
+        "operationId": "plainLogin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "palm_image": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "Base64-encoded palm image."
+                  }
+                },
+                "required": ["palm_image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "hand": {
+                      "type": "string",
+                      "enum": ["left", "right"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Login failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/update-user": {
+      "put": {
+        "summary": "Update user's palm print data.",
+        "operationId": "updateUserInfo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The username of the user."
+                  },
+                  "left_palm_image": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "Base64-encoded left palm image (optional)."
+                  },
+                  "right_palm_image": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "Base64-encoded right palm image (optional)."
+                  }
+                },
+                "required": ["username"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User's palm print data updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

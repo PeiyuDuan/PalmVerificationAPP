@@ -1,0 +1,9 @@
+torch
+opencv-python
+mediapipe
+ultralytics
+numpy
+torchvision
+pillow
+pymysql
+flask
